@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Scrum Simple</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="highlight">Scrum</span> Backlog Express</h1>
+            <p>Herramientas esenciales para tu día a día.</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="clock">⏰ Reloj</button>
+            <button class="tab-button" data-tab="converter">💱 Divisas</button>
+            <button class="tab-button" data-tab="tasks">✅ Tareas</button>
+            <button class="tab-button" data-tab="quotes">💡 Frases</button>
+        </nav>
+
+        <div id="clock" class="tab-content active neumorphic-card">
+            <h2>Reloj Mundial</h2>
+            <p id="currentTime" class="display-lg"></p>
+            <p id="currentDate"></p>
+        </div>
+
+        <div id="converter" class="tab-content neumorphic-card">
+            <h2>Convertidor USD a EUR</h2>
+            <div class="input-group">
+                <input type="number" id="usdInput" placeholder="Monto en USD" class="neumorphic-input">
+                <button id="convertButton" class="neumorphic-button">Convertir</button>
+            </div>
+            <p id="conversionResult" class="result-text"></p>
+        </div>
+
+        <div id="tasks" class="tab-content neumorphic-card">
+            <h2>Mis Tareas (Product Backlog)</h2>
+            <div class="input-group">
+                <input type="text" id="taskInput" placeholder="Añadir nueva tarea..." class="neumorphic-input">
+                <button id="addTaskButton" class="neumorphic-button">Añadir</button>
+            </div>
+            <ul id="taskList" class="neumorphic-list"></ul>
+        </div>
+
+        <div id="quotes" class="tab-content neumorphic-card">
+            <h2>Frases Motivacionales</h2>
+            <blockquote id="quoteDisplay" class="quote-text">"La inspiración existe, pero tiene que encontrarte trabajando."</blockquote>
+            <button id="newQuoteButton" class="neumorphic-button">Nueva Frase</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
