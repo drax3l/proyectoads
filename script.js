@@ -1,116 +1,120 @@
-// --- Lógica de Navegación de Pestañas ---
+// --- 0. Lógica de Navegación de Pestañas ---
+// Asegura que el diseño Neumorphic se vea al cambiar de sección
 document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
 
         const targetTab = button.dataset.tab;
-        document.getElementById(targetTab).classList.add('active');
-        button.classList.add('active');
+        const targetElement = document.getElementById(targetTab);
+        if (targetElement) {
+            targetElement.classList.add('active');
+            button.classList.add('active');
+        }
     });
 });
 
-// --- 1. Reloj Mundial (Actualización Automática) ---
-function updateClock() {
-    const now = new Date();
-    document.getElementById('currentTime').textContent = now.toLocaleTimeString();
-    document.getElementById('currentDate').textContent = now.toLocaleDateString();
-}
-setInterval(updateClock, 1000); // Actualiza cada segundo
-updateClock(); // Llama una vez para mostrarlo inmediatamente
-
-// --- 2. Convertidor de Divisas (USD a EUR usando API) ---
-document.getElementById('convertButton').addEventListener('click', async () => {
-    const amount = document.getElementById('usdInput').value;
-    const resultDisplay = document.getElementById('conversionResult');
-
-    if (amount === "" || isNaN(amount)) {
-        resultDisplay.textContent = "Por favor, ingresa un número válido.";
-        resultDisplay.style.color = '#e74c3c';
-        return;
-    }
-
-    resultDisplay.textContent = "Cargando...";
-    resultDisplay.style.color = '#3498db';
-
-    try {
-        // Cómo se integra la API:
-        // 1. Hacemos una petición a la API de tasas de cambio (gratuita).
-        // 2. Esperamos la respuesta.
-        // 3. Convertimos la respuesta a formato JSON.
-        // 4. Extraemos la tasa de EUR.
-        const response = await fetch('https://open.er-api.com/v6/latest/USD');
-        const data = await response.json();
-        const eurRate = data.rates.EUR; // Tasa de USD a EUR
-
-        const convertedAmount = (parseFloat(amount) * eurRate).toFixed(2);
-        resultDisplay.textContent = `${amount} USD = ${convertedAmount} EUR`;
-        resultDisplay.style.color = '#27ae60';
-
-    } catch (error) {
-        // Manejo de errores si la API falla
-        resultDisplay.textContent = "Error al obtener la tasa de cambio. Intenta de nuevo más tarde.";
-        resultDisplay.style.color = '#e74c3c';
-    }
-});
-
-// --- 3. Lista de Tareas (Product Backlog con LocalStorage) ---
+// --- 1. PROCESO [C]: Tareas con Prioridad (PRIORIDAD 1) ---
 let tasks = JSON.parse(localStorage.getItem('simpleScrumTasks')) || [];
 
 function renderTasks() {
     const taskList = document.getElementById('taskList');
-    taskList.innerHTML = ''; // Limpia la lista antes de redibujar
+    if (!taskList) return; 
+    taskList.innerHTML = ''; 
 
     if (tasks.length === 0) {
-        taskList.innerHTML = '<li class="empty-list">No hay tareas aún. ¡Añade una!</li>';
+        taskList.innerHTML = '<li class="empty-list">No hay tareas aún.</li>';
     } else {
-        tasks.forEach((taskText, index) => {
+        tasks.forEach((task, index) => {
+            // PARCHE DE SEGURIDAD: Si la tarea es vieja (solo texto), le asignamos prioridad Baja
+            const text = typeof task === 'string' ? task : task.text;
+            const priority = task.priority || 'Baja';
+
             const li = document.createElement('li');
+            li.className = `task-item priority-${priority.toLowerCase()}`;
             li.innerHTML = `
-                <span>${taskText}</span>
-                <button class="delete-button neumorphic-button-small" data-index="${index}">🗑️</button>
+                <span><strong>[${priority}]</strong> ${text}</span>
+                <button class="delete-button neumorphic-button-small" onclick="deleteTask(${index})">🗑️</button>
             `;
             taskList.appendChild(li);
         });
     }
-
-    // Añade el evento de click a los nuevos botones de eliminar
-    document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const indexToDelete = event.target.dataset.index;
-            tasks.splice(indexToDelete, 1); // Elimina la tarea del array
-            localStorage.setItem('simpleScrumTasks', JSON.stringify(tasks)); // Actualiza LocalStorage
-            renderTasks(); // Vuelve a dibujar la lista
-        });
-    });
 }
 
-document.getElementById('addTaskButton').addEventListener('click', () => {
+function addTask() {
     const taskInput = document.getElementById('taskInput');
-    const taskText = taskInput.value.trim();
+    const priorityInput = document.getElementById('priorityInput');
+    
+    if (!taskInput || taskInput.value.trim() === "") return;
 
-    if (taskText !== "") {
-        tasks.push(taskText); // Añade la tarea al array
-        localStorage.setItem('simpleScrumTasks', JSON.stringify(tasks)); // Guarda en LocalStorage
-        taskInput.value = ''; // Limpia el input
-        renderTasks(); // Redibuja la lista
+    const newTask = {
+        text: taskInput.value.trim(),
+        priority: priorityInput.value
+    };
+
+    tasks.push(newTask);
+    localStorage.setItem('simpleScrumTasks', JSON.stringify(tasks));
+    taskInput.value = ''; 
+    renderTasks();
+}
+
+function deleteTask(index) {
+    tasks.splice(index, 1);
+    localStorage.setItem('simpleScrumTasks', JSON.stringify(tasks));
+    renderTasks();
+}
+
+// --- 2. PROCESO [B]: Convertidor (API) ---
+async function convertCurrency() {
+    const amount = document.getElementById('usdInput').value;
+    const resultDisplay = document.getElementById('conversionResult');
+
+    if (!amount) {
+        resultDisplay.textContent = "Ingresa un monto.";
+        return;
     }
-});
 
-renderTasks(); // Carga las tareas al iniciar la página
+    resultDisplay.textContent = "Cargando...";
+    try {
+        const response = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await response.json();
+        const rate = data.rates.EUR;
+        const converted = (parseFloat(amount) * rate).toFixed(2);
+        resultDisplay.textContent = `${amount} USD = ${converted} EUR`;
+        resultDisplay.style.color = '#27ae60';
+    } catch (error) {
+        resultDisplay.textContent = "Error de conexión.";
+        resultDisplay.style.color = '#e74c3c';
+    }
+}
 
-// --- 4. Generador de Frases Motivacionales ---
+// --- 3. PROCESO [A]: Reloj Mundial ---
+function updateClock() {
+    const timeDisplay = document.getElementById('currentTime');
+    const dateDisplay = document.getElementById('currentDate');
+    if (!timeDisplay || !dateDisplay) return;
+
+    const now = new Date();
+    timeDisplay.textContent = now.toLocaleTimeString();
+    dateDisplay.textContent = now.toLocaleDateString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// --- 4. PROCESO [D]: Frases ---
 const quotes = [
-    "No te detengas hasta que te sientas orgulloso.",
-    "El único modo de hacer un gran trabajo es amar lo que haces.",
-    "Si puedes soñarlo, puedes lograrlo.",
-    "Cada día es una nueva oportunidad para cambiar tu vida.",
-    "El éxito es la suma de pequeños esfuerzos repetidos día tras día.",
-    "La acción es la clave fundamental de todo éxito.",
-    "No busques el éxito, sé el éxito."
+    "Prioriza C-B-A-D para el éxito.",
+    "El equipo de 4 integrantes es imparable.",
+    "GitHub es nuestro mejor aliado.",
+    "Scrum: Falla rápido, aprende más rápido."
 ];
 
-document.getElementById('newQuoteButton').addEventListener('click', () => {
+function generateQuote() {
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    if (!quoteDisplay) return;
     const randomIndex = Math.floor(Math.random() * quotes.length);
-    document.getElementById('quoteDisplay').textContent = quotes[randomIndex];
-});
+    quoteDisplay.textContent = `"${quotes[randomIndex]}"`;
+}
+
+// Carga inicial
+renderTasks();

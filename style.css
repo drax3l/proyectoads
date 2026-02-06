@@ -1,9 +1,12 @@
+/* Importación de fuente para un look moderno */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #ecf0f3; /* Color de fondo claro para neumorphism */
+    background-color: #ecf0f3;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Alinea arriba */
+    align-items: flex-start;
     min-height: 100vh;
     margin: 0;
     padding: 30px;
@@ -16,7 +19,7 @@ body {
     background-color: #ecf0f3;
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 10px 10px 20px #caced1, -10px -10px 20px #ffffff; /* Sombra de neumorphism */
+    box-shadow: 10px 10px 20px #caced1, -10px -10px 20px #ffffff;
 }
 
 header {
@@ -35,17 +38,12 @@ h1 {
     color: #007bff;
 }
 
-p {
-    color: #7f8c8d;
-    font-size: 0.95em;
-}
-
 /* --- Navegación por Pestañas --- */
 .tabs {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
-    gap: 10px; /* Espacio entre botones */
+    gap: 10px;
 }
 
 .tab-button {
@@ -62,14 +60,9 @@ p {
     transition: all 0.2s ease;
 }
 
-.tab-button:hover {
-    color: #007bff;
-    box-shadow: inset 2px 2px 5px #caced1, inset -2px -2px 5px #ffffff; /* Efecto hundido al pasar el mouse */
-}
-
 .tab-button.active {
     color: #007bff;
-    box-shadow: inset 3px 3px 7px #caced1, inset -3px -3px 7px #ffffff; /* Efecto hundido al estar activo */
+    box-shadow: inset 3px 3px 7px #caced1, inset -3px -3px 7px #ffffff;
 }
 
 /* --- Contenido de las Pestañas --- */
@@ -79,19 +72,11 @@ p {
     border-radius: 15px;
     background-color: #ecf0f3;
     box-shadow: 8px 8px 15px #caced1, -8px -8px 15px #ffffff;
-    animation: fadeIn 0.4s ease-out; /* Animación de aparición */
+    animation: fadeIn 0.4s ease-out;
 }
 
 .tab-content.active {
     display: block;
-}
-
-h2 {
-    color: #34495e;
-    font-size: 1.6em;
-    margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
 }
 
 .display-lg {
@@ -99,14 +84,7 @@ h2 {
     font-weight: 600;
     color: #007bff;
     text-align: center;
-    margin-bottom: 5px;
-}
-
-#currentDate {
-    text-align: center;
-    color: #555;
-    font-size: 1.1em;
-    margin-bottom: 25px;
+    margin: 10px 0;
 }
 
 /* --- Componentes Neumorphic --- */
@@ -118,17 +96,7 @@ h2 {
     background-color: #ecf0f3;
     box-shadow: inset 2px 2px 5px #caced1, inset -2px -2px 5px #ffffff;
     color: #34495e;
-    font-size: 1em;
     outline: none;
-    transition: all 0.2s ease;
-}
-
-.neumorphic-input::placeholder {
-    color: #bdc3c7;
-}
-
-.neumorphic-input:focus {
-    box-shadow: inset 1px 1px 3px #caced1, inset -1px -1px 3px #ffffff, 0 0 0 2px #007bff; /* Borde al enfocar */
 }
 
 .neumorphic-button {
@@ -141,118 +109,85 @@ h2 {
     cursor: pointer;
     box-shadow: 5px 5px 10px #caced1, -5px -5px 10px #ffffff;
     transition: all 0.2s ease;
-    white-space: nowrap; /* Previene el salto de línea en el texto */
-}
-
-.neumorphic-button:hover {
-    color: #0056b3;
-    box-shadow: inset 2px 2px 5px #caced1, inset -2px -2px 5px #ffffff; /* Efecto hundido */
 }
 
 .neumorphic-button:active {
-    box-shadow: inset 3px 3px 7px #caced1, inset -3px -3px 7px #ffffff;
-    transform: translateY(1px); /* Pequeño empuje hacia abajo */
-}
-
-.neumorphic-button-small { /* Para botones como eliminar */
-    padding: 6px 10px;
-    font-size: 0.8em;
-    border-radius: 8px;
-    color: #e74c3c;
-    box-shadow: 3px 3px 6px #caced1, -3px -3px 6px #ffffff;
-}
-.neumorphic-button-small:hover {
-    color: #c0392b;
-    box-shadow: inset 1px 1px 3px #caced1, inset -1px -1px 3px #ffffff;
+    box-shadow: inset 2px 2px 5px #caced1, inset -2px -2px 5px #ffffff;
 }
 
 .input-group {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 20px;
-    align-items: center; /* Centra verticalmente los elementos */
 }
 
-.result-text {
-    text-align: center;
-    font-size: 1.1em;
-    font-weight: 600;
-    margin-top: 20px;
-    color: #34495e; /* Color por defecto */
-}
-
-/* --- Lista de Tareas --- */
-.neumorphic-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 25px;
-}
-
-.neumorphic-list li {
+/* --- NUEVO: Estilos de Prioridad para las Tareas --- */
+.task-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 18px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     background-color: #ecf0f3;
     border-radius: 12px;
     box-shadow: 5px 5px 10px #caced1, -5px -5px 10px #ffffff;
-    color: #34495e;
-    font-size: 1em;
-    font-weight: 500;
+    border-left: 8px solid #ccc; /* Borde base */
+    transition: transform 0.2s;
 }
 
-.neumorphic-list li span {
-    flex-grow: 1; /* Permite que el texto ocupe el espacio */
-    margin-right: 10px;
+.task-item:hover {
+    transform: scale(1.02);
 }
 
-.empty-list {
-    text-align: center;
-    color: #7f8c8d;
-    font-style: italic;
-    padding: 15px;
+/* Colores de prioridad solicitados */
+.priority-alta { border-left-color: #e74c3c; }   /* Rojo */
+.priority-media { border-left-color: #f1c40f; }  /* Amarillo */
+.priority-baja { border-left-color: #2ecc71; }   /* Verde */
+
+.task-item span strong {
+    color: #555;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    margin-right: 5px;
 }
 
-/* --- Frases --- */
+/* --- Botón Eliminar --- */
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    filter: grayscale(1);
+    transition: filter 0.2s;
+}
+
+.delete-button:hover {
+    filter: grayscale(0);
+}
+
+/* --- Frases y Resultados --- */
 .quote-text {
-    font-size: 1.3em;
+    font-size: 1.2em;
     font-style: italic;
     text-align: center;
     color: #34495e;
-    margin: 25px 0;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-/* Animación de entrada */
+.result-text {
+    text-align: center;
+    font-weight: 600;
+    color: #27ae60;
+    margin-top: 15px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsivo básico */
+/* Responsive */
 @media (max-width: 500px) {
-    .container {
-        padding: 20px;
-    }
-    .tabs {
-        flex-wrap: wrap; /* Permite que los botones salten de línea */
-    }
-    .tab-button {
-        flex: auto; /* Ajusta el tamaño automáticamente */
-        width: auto;
-    }
-    .input-group {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .neumorphic-button {
-        width: 100%;
-    }
-    h1 {
-        font-size: 1.8em;
-    }
-    .display-lg {
-        font-size: 2.8em;
-    }
+    .input-group { flex-direction: column; }
+    .tabs { flex-wrap: wrap; }
 }
